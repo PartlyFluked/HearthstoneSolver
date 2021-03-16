@@ -1,0 +1,46 @@
+// EFFECT CODING TECHNIQUE: EFFECTTYPE=EFFECTMOD|TARLOCATION(Pboard/Oboard/Phand/Ohand/board/adj)|ALLOT(rnd/cho/all/self/nan +num)|TARTYPE(min/wep/sec/race/cha).
+	//0 battlecry //1 charge //2 deathrattle //3 divine shield //4 enrage //5 frozen //6 overload //7 poison //8 secret //9 silence //10 stealth //11 taunt 
+	//12 windfury //13 inspire //14 turnpoint  //15 aura //16 trigger //17 invulnerable //18 thorn
+	
+	gentrigcodeexample = 	
+						destroywep:								fx2[0] =	nan:Oboard|wep|nan|destroy
+						heal+taunt:								fx2[0] =	nan:board|min|cho1|dam=0,fx[11]=true
+						+1 atk to all other murlocs:			fx2[15] =	nan:board|murloc|!self|atk+=1
+mirror image:			summon 2 mirror image min:				fx2[0] =	nan:Pboard|nan|nan|summon2(Mirror_Image=1)
+						summon rnd beast:						fx2[0] =	nan:Pboard|nan|nan|summon1(Huffer=0.75;Leokk=0.2;Misha=0.05)
+hex:					transform min into frog:				fx2[0] =	nan:board|min|cho1|transform(frog)
+						deal 1 dam, draw a card:				fx2[0] =	nan:Oboard,Phand|min,nan|all,nan|dam+=1,draw(2)
+						deal 3 dam among rnd:					fx2[0] =	nan:Oboard|cha|3rnd|dam+=1
+						dam 2 rnd min:							fx2[0] =	nan:Oboard|cha|rnd2|dam+=2
+						gain +1/+1 for each friend min:			fx2[0] =	nan:Pboard|nan|self|atk+=num(PBmin),hp+=num(PBmin)
+Swipe:					deal 4 dam to 1 Omin and 4 to others:	fx2[0] =	nan:Oboard|min|cho1,!tar|dam+=4,dam+=1
+						2dam to undam min:						fx2[0] =	ift(undamaged):board|min|cho1|dam+=2
+						+3dam, if you have beast +5dam			fx2[0] =	if(num>0):Pboard,board,board|beast,min,min|nan,cho1,tar|nan,dam+=3,dam+=5
+						+2 armr +3 atk just this turn:			fx2[0] =	time(till,PE, 0):Pboard|hero|nan|atk+=3,armr+=2
+						cho1 Omin destroy start next turn:		fx2[0] =	time(then,PS):Oboard|min|cho1|destroy
+						deal 2 dam, heal 2 hero dam:			fx2[0] =	nan:board,Pboard|cha,hero|cho1,nan|dam+=2,dam-=2
+Water_Elemental:		freeze any character damaged by this:	fx2[13] =	nan:nan|cha|nan|freeze
+Tunda_Rhino:			Your beasts have charge:				fx2[15] =	nan:Pboard|beast|all|fx[10]=true
+						+3 atk whenever damaged:				fx2[16] =	ift(damaged):Pboard|nan|self|nan,atk+=3
+Truesilver_Champion:	if hero attacks +2 hp:					fx2[16] =	ift(attacks):Pboard|nan|hero|nan,dam-=2
+Warsong_Connabder:		when summon min with atk<4, give charge:fx2[16] =	ift(summoned,atk<=3):Pboard|nan|nan,tar,tar|nan,nan,fx[1]=true
+Starving buzzard:		when you summon a beast, draw1:			fx2[16] =	ift(summoned):Pboard,Phand|beast,nan|nan,nan|nan,draw(1)	
+Healing totem:			at end Pturn, -1 dam to all Pmin:		fx2[14] =	PE:Pboard|min|all|dam-=1
+Mortal coil:			deal 1 dam, if kill draw1:				fx2[0] =	ift(killed):board,Phand|cha,nan|cho1,nan|dam+=1,draw(1)
+Tracking:				look at top 3 cards,draw1 discard2:		fx2[0] =	nan:Pboard|nan|nan|peek(3)
+Vanish:					return all mins to owners hand:			fx2[0] =	nan:board|min|all|return
+Demonwrath:				deal 2 dam to all non-demon min:		fx2[0] =	nan:board|min|!demon|dam+=2
+Dragon_Consort:			next dragon costs 2 less:				fx2[0] =	nan:Phand|nan|dragon|cheap(2)
+
+
+	things to take into account:
+	target location: 			Pboard/Oboard/Phand/Ohand/board/adj
+	target choose technique: 	rnd(times,numtar)/cho(num)/all/self/other
+	target type:				min/wep/sec/race/cha/hero/undam/dam
+	stats:						hp/dam/dur/cost/spdam/Pcards/Pmin/PCmana/PMmana
+	effects:					charge/divshield/frozen/silence/stealth/taunt/windfury/invulnerable
+	triggers:					aura/battlecry/deathrattle/enrage/overload/secret/thorn/turnpoint/trigger
+	triggerspecific:			a/b/d/e/o/s/t/(Pla\Opp\Turn+Start\End)/(damaged)
+	generaltriggercode:			statchange(stat=change,stat2=change2)/draw(num)/summon+num(name=prob,name2=prob2)/destroy/transform(name)/control/dupecard(num)
+	generaltriggerconditions:	temp(start,end)/iff(holding()\)/ifinstead()/
+	

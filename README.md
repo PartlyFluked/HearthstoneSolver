@@ -1,0 +1,1 @@
+Old side project for a Hearthstone simulator and solver agent utilizing Monte Carlo Tree Search and the WinAPI GUI.

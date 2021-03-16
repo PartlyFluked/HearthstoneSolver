@@ -1,0 +1,19 @@
+battlecry
+draw
+mulligan
+spells
+overload
+taunt
+fatigue
+divine shield
+hero powers
+secrets
+windfury
+stealth
+frozen
+silence
+enrage
+thorn
+deathrattle
+charge
+spell damage
